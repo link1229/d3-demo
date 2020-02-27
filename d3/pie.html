@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>d3.js用layuot绘制饼图</title>
+    <script src="../static/js/d3.js"></script>
+</head>
+<body>
+    <div id="svg"></div>
+    <script>
+        console.log(d3.version);
+        
+        const svg=d3.select("#svg").append("svg").attr("width","300").attr("height","300");
+        const dataset=[
+            ["java",2552],
+            ["html",225],
+            ["javascript",334],
+            ["cesium",1000],
+            ["recat",1250],
+            ["c++",2000],
+            ["vue",1888],
+            ["element",2420],
+            ["echarts",3201]
+        ]
+        const pie=d3.pie().value(d=>d[1]);
+        const pieData=pie(dataset);
+        console.log(dataset);
+        console.log(pieData);
+        
+        const colors=d3.scaleOrdinal(d3.schemeCategory10)
+        // innerRadius=>内半径;outerRadius=>外半径
+        const arcPath = d3.arc().innerRadius(50).outerRadius(100)
+        svg.selectAll("path").data(pieData).enter().append("path").attr('d', d => arcPath(d))
+            .attr('transform', 'translate(150,200)')
+            .attr("stroke", "#000").attr('stroke-width', "3px")
+            .attr('fill', (d,i)=>colors(i))
+        svg.selectAll("text").data(pieData).enter().append("text").attr('transform', d=>'translate(150,200)'+`translate(${arcPath.centroid(d)})`)
+        .attr("text-anchor","middle").attr("fill","#fff").attr("font-size","10px")
+        .text(d=>d.data[0])
+    </script>
+</body>
+</html>

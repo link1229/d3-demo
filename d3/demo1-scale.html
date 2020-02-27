@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>d3.js绘制矩形</title>
+    <script src="../static/js/d3.js"></script>
+    <!-- <script src="../d3-scale-chromatic.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
+</head>
+
+<body>
+    <div id="svg"></div>
+    <script>
+        console.log(d3);
+
+        const dataset = [50, 100, 30, 60, 90, 40];
+        const height = 400;
+        const width = 400;
+        const svg = d3.select("#svg").append("svg").attr("height", height).attr("width", width);
+        const padding = { top: 20, left: 20, right: 20, bottom: 20 };
+        // x轴的长度
+        const xAxisWidth=width-padding.left-padding.right;
+        // y轴的长度
+        const yAxisWidth=height-padding.top-padding.bottom;
+        const rectWidth = 30;
+        const rectStep = 35;
+        // svg.selectAll("rect").data(dataset).enter().append("rect")
+        // const text = svg.selectAll("text").data(dataset).enter().append("text") 
+        // const colors=d3.scaleOrdinal(d3.schemeCategory10);
+        const colors=d3.schemeCategory10
+        console.log(d3.schemeCategory10);
+        console.log(colors[1]);
+        const genRect = obj => {
+            obj.attr("fill",(d,i)=>colors[i]).attr("x", (d, i) => padding.left +xScale(i))
+                .attr("y", (d, i) => height - padding.bottom - (yScale(0)-yScale(d)))
+                .attr("width", xScale.bandwidth())
+                .attr("height", d => yScale(0)-yScale(d))
+        }
+        const genText = obj => {
+            obj.attr("fill", "#fff").attr("class","number")
+                .attr("font-size", "14px")
+                .attr("text-anchor", "middle")
+                .attr("x", (d, i) => padding.left + xScale(i))
+                .attr("y", (d, i) => height - padding.bottom - (yScale(0)-yScale(d)))
+                .text(d => d)
+                .attr("dx", xScale.bandwidth() / 2)
+                .attr("dy", "1em")
+        }
+        // 初始化
+        function init(dataset) {
+            genRect(svg.selectAll("rect").data(dataset).enter().append("rect"))
+            genText(svg.selectAll(".number").data(dataset).enter().append("text"))
+        }
+        function update(dataset) {
+            genRect(svg.selectAll("rect").data(dataset))
+            genText(svg.selectAll(".number").data(dataset))
+        }
+        
+        // 跟新数据
+        setInterval(() => {
+            for (let i = 0; i < dataset.length; i++) {
+                dataset[i]++;
+            }
+            update(dataset)
+            
+        }, 1000);
+        const xScale=d3.scaleBand().domain(dataset.map((o,i)=>i)).range([0,xAxisWidth]).padding(0.1);
+        const yScale=d3.scaleLinear().domain([0,d3.max(dataset)]).range([yAxisWidth,0]);
+        const xAxis=d3.axisBottom(xScale);
+        const gX=svg.append("g").attr("transform",`translate(${padding.left},${height-padding.bottom})`)
+        // console.log();
+        
+        gX.call(xAxis)
+        const yAxis=d3.axisLeft(yScale);
+        const gY=svg.append("g").attr("transform",`translate(${padding.left},${height-yAxisWidth-padding.bottom})`)
+        gY.call(yAxis)
+        init(dataset);
+        console.log(gX);
+        
+    </script>
+</body>
+
+</html>

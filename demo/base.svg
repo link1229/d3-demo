@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" version="1.1">
+<circle cx="100" cy="280" r="80" style="fill:yellow"/>
+<ellipse rx="330" ry="280" style="fill:red"/>
+<polygon points="100,20 20,90 20,200" style="fill:green;stroke:orange;stroke-width:4" />
+<polyline points="100,20 20,90 20,200" style="fill:green;stroke:orange;stroke-width:4"/>
+<text x="200" y="150" style="fill:purle" textLength="90">
+  我要  <tspan style="fill:blue">学d3.js</tspan>
+</text>
+<rect width="100" height="100" x="100" y="20" style="fill:skyblue"/>
+<line x1="0" x2="600" y1="0" y2="360"  style="fill:yellow;stroke-width:10"/>
+</svg>

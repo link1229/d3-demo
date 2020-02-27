@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>d3.js绘制矩形</title>
+  <script src="../static/js/d3.js"></script>
+</head>
+
+<body>
+  <div id="svg"></div>
+  <script>
+    console.log(d3);
+
+    const dataset = [50, 100, 30, 60, 90, 40];
+    const height = 400;
+    const width = 400;
+    const svg = d3.select("#svg").append("svg").attr("height", height).attr("width", width);
+    const padding = { top: 20, left: 20, right: 20, bottom: 20 };
+    const rectWidth = 30;
+    const rectStep = 35;
+    // svg.selectAll("rect").data(dataset).enter().append("rect")
+    // const text = svg.selectAll("text").data(dataset).enter().append("text")
+    const genRect = obj => {
+      obj.attr("fill", "red").attr("x", (d, i) => padding.left + i * rectStep)
+        .attr("y", (d, i) => height - padding.bottom - d)
+        .attr("width", rectWidth)
+        .attr("height", d => d)
+    }
+    const genText=obj=>{
+      obj.attr("fill", "#fff")
+      .attr("font-size", "14px")
+      .attr("text-anchor", "middle")
+      .attr("x", (d, i) => padding.left + i * rectStep)
+      .attr("y", (d, i) => height - padding.bottom - d)
+      .text(d => d)
+      .attr("dx", rectWidth / 2)
+      .attr("dy", "1em")
+    }
+    // 初始化
+    genRect(svg.selectAll("rect").data(dataset).enter().append("rect"))
+    genText(svg.selectAll("text").data(dataset).enter().append("text"))
+    // 跟新数据
+    setInterval(() => {
+      for (let i = 0; i < dataset.length; i++) {
+        dataset[i]++;
+        
+      }
+      genRect(svg.selectAll("rect").data(dataset))
+      genText(svg.selectAll("text").data(dataset))
+    }, 1000);
+  </script>
+</body>
+
+</html>
